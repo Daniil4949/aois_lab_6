@@ -38,72 +38,72 @@ class HashTable:
         return string.rstrip(', ') + "}"
 
     def hash(self, key) -> int:
-        power: int = 0
-        hashing: int = 0
+        power_number: int = 0
+        hash_value: int = 0
         for element in key:
-            hashing += (ord(element) - 32) * pow(95, power)
-            power += 1
-        index = hashing % self.num_cells
+            hash_value += (ord(element) - 32) * pow(95, power_number)
+            power_number += 1
+        index = hash_value % self.num_cells
         return index
 
     def add(self, key, value):
-        index = self.hash(str(key))
+        index: int = self.hash(str(key))
         if index < 0 or index > self.num_cells:
             return False
         if not self.cells[index]:
             self.cells[index] = [Cell(key, value)]
             return True
         else:
-            for entry in self.cells[index]:
-                if entry.key == key:
-                    entry.value = value
+            for item in self.cells[index]:
+                if item.key == key:
+                    item.value = value
                     return True
             self.cells[index].append(Cell(key, value))
             return True
 
     def update_value(self, key, value):
-        index = self.hash(str(key))
+        index: int = self.hash(str(key))
         if not index:
             return False
         if not self.cells[index]:
             return False
         else:
-            for entry in self.cells[index]:
-                if entry.key == key:
-                    entry.value = value
+            for item in self.cells[index]:
+                if item.key == key:
+                    item.value = value
                     return True
             return False
 
     def delete(self, key):
-        index = self.hash(str(key))
+        index: int = self.hash(str(key))
         if not index:
             return False
         if not self.cells[index]:
             return False
         else:
-            for entry in self.cells[index]:
-                if entry.key == key:
-                    self.cells[index].remove(entry)
+            for item in self.cells[index]:
+                if item.key == key:
+                    self.cells[index].remove(item)
                     return True
             return False
 
     def look_up(self, key):
-        index = self.hash(str(key))
+        index: int = self.hash(str(key))
         if not self.cells[index]:
             return False
         else:
-            for entry in self.cells[index]:
-                if entry.key == key:
-                    return entry.value
+            for item in self.cells[index]:
+                if item.key == key:
+                    return item.value
             return False
 
     def print_distribution(self):
-        value: str = ''
-        bucket_num = 0
-        for bucket in self.cells:
-            if bucket:
+        result: str = ''
+        index: int = 0
+        for element in self.cells:
+            if element:
                 count = 0
-                for _ in bucket:
+                for _ in element:
                     count += 1
                 self.TOTAL += count
                 if count > self.MAX:
@@ -112,8 +112,8 @@ class HashTable:
                     self.MIN = count
             else:
                 pass
-            bucket_num += 1
-        value += ("Largest Bucket has %d entries\n"
-                  "Smallest Bucket has %d entries\nTotal entries: %d\n"
-                  "Avg bucket size is %f" % (self.MAX, self.MIN, self.TOTAL, (self.TOTAL / self.num_cells)))
-        return value
+            index += 1
+        result += ("Largest Bucket has %d entries\n"
+                   "Smallest Bucket has %d entries\nTotal entries: %d\n"
+                   "Avg element size is %f" % (self.MAX, self.MIN, self.TOTAL, (self.TOTAL / self.num_cells)))
+        return result
